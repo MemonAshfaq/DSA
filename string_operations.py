@@ -307,7 +307,6 @@ def group_anagrams(l: List[str]) -> List[List[str]]:
         result.append(group)
     return result
 
-
 # ------------------------------------------------------
 # Version 2: Hashing with sorted key
 # Complexity: O(n * m log m) time, O(n * m) space
@@ -343,14 +342,32 @@ def _tests_anagrams():
 # =====================================================
 # 3) SLIDING WINDOW
 # =====================================================
-def length_of_longest_substring_no_repeat(s):
+# Problem: Find the length of the longest substring without repeating characters
+# Input:   s (str) - input string
+# Output:  (int, str) - length of longest substring, and the substring itself
+# Complexity: O(n) time, O(k) space (k = unique chars in window)
+#
+# Examples:
+#   "abcabcbb"   → (3, "abc")
+#   "bbbbb"      → (1, "b")
+#   "pwwkew"     → (3, "wke")
+#   ""           → (0, "")
+#
+# Approach:
+# - Use sliding window with two pointers (l and r)
+# - Maintain a dict last[ch] = last seen index of char
+# - If repeat found, move l to last[ch] + 1
+# - Track best length and substring
+
+def length_of_longest_substring_no_repeat(s: str):
     l = 0
     best = 0
     last = {}
     window = ""
     longest = ""
+    
     for r, ch in enumerate(s):
-        if ch in window:
+        if ch in last and last[ch] >= l:   # FIX: ensure l moves forward
             l = last[ch] + 1
         window = s[l:r+1]
         last[ch] = r
@@ -359,14 +376,33 @@ def length_of_longest_substring_no_repeat(s):
             best = len(window)
             longest = window
         
-    return best,longest
+    return best, longest
 
-def find_permutations1(s:str) -> List[str]:
+# Problem: Generate all permutations of a string.
+# Input:   s (str) - input string
+# Output:  List[str] - list of all permutations (order not guaranteed)
+# Complexity: 
+#   Time  ≈ O(n * n!)   (permutation count is n!; building strings adds a factor of n)
+#   Space ≈ O(n * n!)   (to store all permutations)
+#
+# Examples:
+#   "ab"   → ["ab", "ba"]
+#   "abc"  → ["abc", "bac", "bca", "acb", "cab", "cba"]
+#
+# Approach (iterative insertion):
+# - Start with [""].
+# - For each character ch in s:
+#     - Insert ch into every position of every word built so far.
+# - The list grows from 1 → n! items.
+
+from typing import List
+
+def find_permutations1(s: str) -> List[str]:
     word_list = ['']
     for ch in s:
         new_word_list = []
         for word in word_list:
-            for pos in range(len(word)+1):
+            for pos in range(len(word) + 1):
                 new_word_list.append(word[:pos] + ch + word[pos:])
         word_list = new_word_list
     return word_list
@@ -375,7 +411,7 @@ def _tests_sliding_window():
     s = "pwkwkakdfewjourkadf"
     best, longest = length_of_longest_substring_no_repeat(s)
     CHECK ("length_of_longest_substring_no_repeat", best == 10 and longest == "akdfewjour")
-    print (find_permutations1("abcd"))
+    #print (find_permutations1("abcd"))
 
 # =====================================================
 # 4) PATTERN MATCHING
