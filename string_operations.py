@@ -416,6 +416,17 @@ def _tests_sliding_window():
 # =====================================================
 # 4) PATTERN MATCHING
 # =====================================================
+# Naive substring search: find the first occurrence of needle in haystack.
+# Approach:
+#  • Slide a window of length n = len(needle) across haystack.
+#  • At each position i, compare haystack[i : i+n] with needle.
+#  • If a match is found, return starting index i.
+#  • If no match is found after scanning, return -1.
+# Edge case: empty needle → return 0 by convention (like Python str.find()).
+# Example:
+#   haystack = "hello", needle = "ll" → return 2
+#   haystack = "aaaaa", needle = "bba" → return -1
+# Complexity: O((h-n+1)·n) = O(h·n) in worst case (h = len(haystack)).
 def find_substring_naive(haystack: str, needle: str) -> int:
     n = len(needle)
     h = len(haystack)
@@ -423,28 +434,46 @@ def find_substring_naive(haystack: str, needle: str) -> int:
     if n == 0:
         return 0
     
-    for i in range(h+1-n):
+    for i in range(h + 1 - n):
         if haystack[i:i+n] == needle:
             return i
-            break
     return -1
 
-def _find_word_within_a_string(s:str,ss:str) -> bool:
+# Check if string ss is a subsequence of string s.
+# Approach:
+#  • Use two pointers i (for s) and j (for ss).
+#  • Walk through s:
+#       - If chars match, move both i and j.
+#       - Otherwise, move only i.
+#  • If j reaches len(ss), all chars of ss were found in order inside s.
+# Example:
+#   s = "abcde", ss = "ace" → True  (a, c, e found in order)
+#   s = "abcde", ss = "aec" → False (order not preserved)
+# Complexity: O(len(s)), O(1) space.
+def _find_word_within_a_string(s: str, ss: str) -> bool:
     ls = len(s)
     lss = len(ss)
 
     i = j = 0
-
-    while (i < ls and j < lss):
+    while i < ls and j < lss:
         if s[i] == ss[j]:
             j += 1
         i += 1
-    return (j == lss)
+    return j == lss
 
-def find_words_within_a_string(s:str,lss:List[str]) -> int:
+# Count how many words in lss are subsequences of string s.
+# Approach:
+#  • For each word ss in list lss, check if it is a subsequence of s
+#    using _find_word_within_a_string.
+#  • Increment count if True.
+# Example:
+#   s = "abcde", lss = ["a","bb","acd","ace"]
+#   Subsequences: "a", "acd", "ace" → total = 3
+# Complexity: O(m·n), where m = len(lss), n = len(s).
+def find_words_within_a_string(s: str, lss: List[str]) -> int:
     occ = 0
     for ss in lss:
-        occ += _find_word_within_a_string(s,ss)
+        occ += _find_word_within_a_string(s, ss)
     return occ
 
 # ---------- Sub Runner ----------
