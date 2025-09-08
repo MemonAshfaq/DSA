@@ -216,11 +216,48 @@ def _tests_basics():
 # =====================================================
 # 1) ANAGRAMS
 # =====================================================
+# Problem: Check if two strings are anagrams
+# Input:   s (str), t (str) - input strings
+# Output:  bool - True if anagrams, else False
+# Complexity: O(n) time, O(k) space (k = unique chars)
+#
+# Examples:
+#   "listen", "silent"   → True
+#   "anagram", "nagaram" → True
+#   "rat", "car"         → False
+
+# Version 1: Frequency dictionary compare
 def is_anagram(s: str, t: str) -> bool:
     if len(s) != len(t):
         return False
     return char_frequency(s) == char_frequency(t)
 
+
+# Version 2: Optimized one-pass counter. Works for any character set.
+# Approach:
+# - Use a single dictionary
+# - Increment counts for s
+# - Decrement counts for t
+# - If all counts return to 0 → anagram
+def is_anagram_one_pass(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+    
+    freq = {}
+    for ch1, ch2 in zip(s, t):
+        freq[ch1] = freq.get(ch1, 0) + 1
+        freq[ch2] = freq.get(ch2, 0) - 1
+    
+    # all values must be 0
+    return all(v == 0 for v in freq.values())
+
+# Version 3: Optimized one-pass counter with fixed-size array
+# Approach:
+# - Use fixed-size array of length 26
+# - Increment counts for chars in s
+# - Decrement counts for chars in t
+# - If all counts return to 0 → anagram
+# Complexity: O(n) time, O(1) space (26 letters only)
 def is_anagram2(s: str, t: str) -> bool:
     if len(s) != len(t):
         return False
@@ -233,29 +270,74 @@ def is_anagram2(s: str, t: str) -> bool:
 
     return all(c==0 for c in cnt)
 
-def group_anagrams(l: List):
-    result = []
-    visted = [False]*len(l)
+# Problem: Group strings that are anagrams of each other.
+# Input:   l (List[str]) - list of strings
+# Output:  List[List[str]] - groups of anagrams
+#
+# Examples:
+#   ["eat","tea","tan","ate","nat","bat"]
+#     → [["eat","tea","ate"], ["tan","nat"], ["bat"]]
+
+# ------------------------------------------------------
+# Version 1: Pairwise check with visited
+# Complexity: O(n^2 * m) time, O(n) space
+#   n = number of strings, m = avg length per string
+# Approach:
+# - Maintain visited[] to track used strings
+# - For each unvisited string:
+#     - Start a new group
+#     - Compare with all later strings using is_anagram
+#     - Mark matches as visited and add them to group
+# - Append group to result and continue
+
+from typing import List
+
+def group_anagrams(l: List[str]) -> List[List[str]]:
+    result: List[List[str]] = []
+    visited = [False] * len(l)
 
     for i in range(len(l)):
-        if visted[i]:
+        if visited[i]:
             continue
         group = [l[i]]
-        for j in range(i+1,len(l)):
-            if not visted[j] and is_anagram(l[i],l[j]):
+        for j in range(i + 1, len(l)):
+            if not visited[j] and is_anagram(l[i], l[j]):
                 group.append(l[j])
-                visted[j] = True
+                visited[j] = True
         result.append(group)
     return result
+
+
+# ------------------------------------------------------
+# Version 2: Hashing with sorted key
+# Complexity: O(n * m log m) time, O(n * m) space
+# Approach:
+# - For each string, sort its characters to form a key
+# - Use dictionary: key → list of words
+# - Strings with the same sorted key are grouped together
+# - Return dictionary values as the result
+
+def group_anagrams_sorted(l: List[str]) -> List[List[str]]:
+    buckets = {}
+    for s in l:
+        key = ''.join(sorted(s))
+        if key not in buckets:
+            buckets[key] = []
+        buckets[key].append(s)
+    return list(buckets.values())
 
 # ---------- Sub Runner ----------
 def _tests_anagrams():
     CHECK("is_anagram", is_anagram("listen", "silent"))
     CHECK("is_anagram2", is_anagram2("listen", "silent"))
+    CHECK("is_anagram2", is_anagram_one_pass("listen", "silent"))
     grouped = group_anagrams(["eat","tea","tan","ate","nat","bat"])
     grouped = frozenset (map(frozenset,grouped))
     expected = [['tan','nat'],['bat'],['eat','ate','tea']]
     expected = frozenset(map(frozenset, expected))
+    CHECK("group_anagrams", expected == grouped)
+    grouped = group_anagrams_sorted(["eat","tea","tan","ate","nat","bat"])
+    grouped = frozenset (map(frozenset,grouped))
     CHECK("group_anagrams", expected == grouped)
 
 # =====================================================
