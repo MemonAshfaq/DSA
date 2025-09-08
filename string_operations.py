@@ -13,25 +13,66 @@ def CHECK(msg: str, cond: bool) -> None:
 # =====================================================
 # 1) BASICS
 # =====================================================
+# Problem: Reverse the given string
+# Input:  s (str) - input string
+# Output: str     - reversed string
+# Complexity: O(n) time, O(n) space
 def reverse_string(s: str) -> str:
+    # s[::-1] also works
     return s[-1:-len(s)-1:-1]
 
+# Problem: Reverse the given string
+# Input:  s (str) - input string
+# Output: str     - reversed string
+# Complexity: O(n^2) time (string concatenation), O(n) space
 def reverse_string2(s: str) -> str:
     rev = ""
     for ch in s:
         rev = ch + rev
     return rev
 
-def lower_case (s: str) -> str:
+# ASCII Cheat Sheet (Digits + Letters)
+# -----------------------------------
+# Digits (0–9):      '0' = 48  (0x30)   ...   '9' = 57  (0x39)
+# Uppercase (A–Z):   'A' = 65  (0x41)   ...   'Z' = 90  (0x5A)
+# Lowercase (a–z):   'a' = 97  (0x61)   ...   'z' = 122 (0x7A)
+#
+# Binary difference (bit trick):
+# 'A' = 65  = 0b0100_0001
+# 'a' = 97  = 0b0110_0001
+#                 ^
+#              0x20 bit → lowercase
+#
+# Trick:
+# - To lowercase: ch | 0x20
+# - To uppercase: ch & ~0x20
+
+# Problem: Convert all uppercase letters in a string to lowercase (without using str.lower()).
+# Input:  s (str) - input string
+# Output: str     - lowercase string
+# Complexity: O(n) time, O(n) space
+
+def lower_case(s: str) -> str:
     result = ""
     for ch in s:
-        ch = ord(ch)
+        ch = ord(ch)                            # get ASCII code
         if (ch >= ord("A")) and (ch <= ord("Z")):
-            ch |= 0x20
-        result += chr(ch)
+            ch |= 0x20                          # set 6th bit → convert to lowercase
+        result += chr(ch)                       # append converted character
     return result
 
-def upper_case (s: str) -> str:
+# Problem: Convert all lowercase letters in a string to uppercase (without using str.upper()).
+# Input:  s (str) - input string
+# Output: str     - uppercase string
+# Complexity: O(n) time, O(n) space
+#
+# ASCII bit trick:
+# 'a' = 97 (0x61) → 0b0110_0001
+# 'A' = 65 (0x41) → 0b0100_0001
+# Flip off 0x20 bit (bit 5):
+#   ch & ~0x20 → uppercase
+
+def upper_case(s: str) -> str:
     result = ""
     for ch in s:
         ch = ord(ch)
@@ -40,41 +81,93 @@ def upper_case (s: str) -> str:
         result += chr(ch)
     return result
 
-def is_palindrome_two_pointer (s: str, ignore_case: bool = False) -> bool:
+# Problem: Check if a string is a palindrome using two-pointer technique
+# Input:  s (str)          - input string
+#         ignore_case (bool) - whether to ignore case when checking
+# Output: bool             - True if palindrome, else False
+# Complexity: O(n) time, O(1) extra space
+#
+# Approach:
+# - Start with two pointers: i at start, j at end
+# - Compare characters moving inward
+# - Stop if mismatch found
+# - If ignore_case=True, first convert to lowercase
+
+def is_palindrome_two_pointer(s: str, ignore_case: bool = False) -> bool:
     i = 0
     j = len(s) - 1
 
     if ignore_case:
         s = lower_case(s)
 
-    while (i < j):
-        if (s[i] != s[j]):
+    while i < j:
+        if s[i] != s[j]:
             break
         i += 1
         j -= 1
     
     return False if (i < j) else True
 
+# Problem: Normalize a string by:
+#          - Keeping only alphanumeric characters
+#          - Converting letters to lowercase
+# Input:   s (str) - input string
+# Output:  str     - normalized lowercase alphanumeric string
+# Complexity: O(n) time, O(n) space
+#
+# Examples:
+#   "Hello, World! 123"         → "helloworld123"
+#   "PYTHON3.9"                 → "python39"
+#   "A man, a plan, a canal!"   → "amanaplanacanal"
+#   "Room #42B"                 → "room42b"
+#   "!!!@@@###"                 → ""
+#
+# Approach:
+# - 'a'–'z' → keep
+# - '0'–'9' → keep
+# - 'A'–'Z' → lowercase via OR 0x20
+# - else    → skip
+
 def normalize_alnum_lower(s: str) -> str:
     result = ""
     for ch in s:
         ch = ord(ch)
         if (ch >= ord("a") and ch <= ord("z")) or \
-            (ch >= ord("0") and ch <= ord("9")):
-            result += (chr(ch))
+           (ch >= ord("0") and ch <= ord("9")):
+            result += chr(ch)
         elif (ch >= ord("A") and ch <= ord("Z")):
-            ch |= 0x20
-            result += (chr(ch))
+            ch |= 0x20                  # make lowercase
+            result += chr(ch)
         else:
-            pass
+            pass                        # skip non-alnum
     return result
 
-def char_frequency(s:str) -> Dict[str,int]:
+# Problem: Count frequency of each character in a string
+# Input:   s (str) - input string
+# Output:  dict[str,int] - mapping of char → frequency
+# Complexity: O(n) time, O(k) space (k = unique chars)
+#
+# Examples:
+#   "hello"    → {'h':1, 'e':1, 'l':2, 'o':1}
+#   "aabbccc"  → {'a':2, 'b':2, 'c':3}
+#   ""         → {}
+#
+# Approach #1:
+# - Iterate through string
+# - Use dict.get(ch,0)+1 to update count
+
+from typing import Dict
+
+def char_frequency(s: str) -> Dict[str,int]:
     freq = {}
     for ch in s:
-        freq[ch] = freq.get(ch,0) + 1
+        freq[ch] = freq.get(ch, 0) + 1
     return freq
 
+# Approach #2:
+# - Iterate through string
+# - If char already seen, increment count
+# - Else initialize to 1
 def char_frequency2(s:str) -> Dict[str,int]:
     freq = {}
     for ch in s:
@@ -84,11 +177,25 @@ def char_frequency2(s:str) -> Dict[str,int]:
             freq[ch] = 1
     return freq
 
-def first_non_repeating_char(s:str) -> str:
-    freq = char_frequency(s)
-    for k,v in freq.items():
-        if v == 1:
-            return k
+# Problem: Find the first non-repeating character in a string
+# Input:   s (str) - input string
+# Output:  str or None - first char with frequency 1 (None if none exist)
+# Complexity: O(n) time, O(k) space (k = unique chars)
+#
+# Examples:
+#   "leetcode"    → 'l'
+#   "aabbccde"    → 'd'
+#   "aabbcc"      → None
+#
+# Approach (two-pass):
+# 1. Count frequency of each character
+# 2. Scan string again in order, return first char with freq == 1
+
+def first_non_repeating_char(s: str) -> str:
+    freq = char_frequency(s)        # Pass 1: count
+    for ch in s:                    # Pass 2: scan in order
+        if freq[ch] == 1:
+            return ch
     return None
 
 # ---------- Sub Runner ----------
