@@ -1,0 +1,52 @@
+Loop Patterns Cheat Sheet
+=========================
+
+1. Single Loop
+   Template: for i in range(n): ...
+   Usage: Array traversal, prefix sums, Kadane’s algorithm, hashing.
+
+2. Double Loops
+   - All pairs (i, j):
+       for i in range(n):
+           for j in range(n): ...
+     Usage: Matrix traversal, brute-force comparisons.
+
+   - Unique pairs (i < j):
+       for i in range(n):
+           for j in range(i+1, n): ...
+     Usage: Two-sum brute force, triangle problems.
+
+   - Subarrays (i..j):
+       for i in range(n):
+           for j in range(i, n):
+               sub = arr[i:j+1]
+     Usage: All substrings, all subarrays.
+
+3. Triple Loops
+   Template:
+       for i in range(n):
+           for j in range(i+1, n):
+               for k in range(j+1, n): ...
+   Usage: 3-sum, 3 elements combinations, brute-force knapsack.
+
+4. Sliding Window
+   - Fixed size k:
+       for i in range(n-k+1):
+           window = arr[i:i+k]
+     Usage: Max average subarray, fixed-length substring.
+
+   - Variable size (two pointers):
+       left = 0
+       for right in range(n):
+           # expand right
+           while condition_not_ok:
+               left += 1
+     Usage: Longest substring without repeat, min window substring.
+
+5. Reverse Loop
+   Template: for i in range(n-1, -1, -1): ...
+   Usage: DP from end, backtracking, trapping rain water.
+
+6. Enumerated Loop
+   Template: for i, val in enumerate(arr): ...
+   Usage: Need both index and value.
