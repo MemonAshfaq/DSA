@@ -1,0 +1,65 @@
+Handy Interview Tricks Cheat Sheet
+=================================
+
+1. Complexity Check Shortcuts
+   - Single loop → O(n)
+   - Nested loops (i,j) → O(n^2)
+   - Triple loops (i,j,k) → O(n^3)
+   - Divide & Conquer (split in half) → O(log n)
+   - Loop + halve each step → O(log n)
+   - Shrink by factor → O(log n)
+
+2. Index / Range Tricks
+   - All subarrays → O(n^2)
+   - Substrings of length k → O(n-k+1)
+   - Sum 1..n = n(n+1)/2
+   - Subarray count = n(n+1)/2
+   - Pair count (i<j) = n(n-1)/2
+
+3. Bitwise Tricks
+   - Check power of 2: n & (n-1) == 0
+   - Swap without temp: a ^= b; b ^= a; a ^= b
+   - Extract lowest set bit: n & -n
+   - Count set bits: while n: n &= (n-1)
+
+4. Hashing Shortcuts
+   - Set/dict lookup → O(1)
+   - set() → contains duplicate
+   - dict/Counter → frequency counts
+
+5. Sliding Window
+   - Fixed size k:
+       for i in range(n-k+1): window = arr[i:i+k]
+   - Variable size:
+       left = 0
+       for right in range(n):
+           while invalid: left += 1
+
+6. Sorting Shortcuts
+   - Sort + 2 pointers (two-sum, 3-sum, intervals)
+   - Sorted input → use binary search
+
+7. Tree/Graph Traversal
+   - BFS → queue (level order)
+   - DFS → recursion/stack
+   - Graph → visited set needed
+   - Cycle detection → parent pointer or recursion stack
+
+8. Math & Formula Shortcuts
+   - GCD: gcd(a,b) = gcd(b, a%b)
+   - nC2 = n(n-1)/2 (pairs)
+   - nC3 = n(n-1)(n-2)/6 (triplets)
+   - Prefix sums → quick range queries
+   - Modular arithmetic: (a+b)%m = ((a%m)+(b%m))%m
+
+9. String Tricks
+   - Reverse: s[::-1]
+   - Palindrome: s == s[::-1]
+   - Anagram check: sorted() or count letters
+   - ord(ch) → ASCII math
+
+10. Memory Hooks
+   - Stack → Last undone (undo, parentheses)
+   - Queue → First in line (BFS, scheduling)
+   - Heap → Always min/max
+   - DP → Reuse subproblems

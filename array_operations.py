@@ -776,7 +776,7 @@ def three_sum_op(nums: List[int]) -> List[List[int]]:
     """
     res:set[List[int]] = set()
     for i, n in enumerate(nums):
-        l = _two_sum_op(nums[0:i] + nums[i+1:],-nums[i])
+        l = _two_sum_op(nums[:i] + nums[i+1:],-nums[i])
         if l:
             l.append(nums[i])
             trip = tuple(sorted(l))
