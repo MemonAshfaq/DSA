@@ -1,0 +1,91 @@
+Blind 75 — 40 Must-Do Problems for Prelim Prep
+================================================
+
+These 40 problems are selected from Blind 75 to maximize Google prelim success.
+They cover all major patterns, avoid very hard problems, and balance breadth with depth.
+
+------------------------------------------------
+ARRAYS / HASHING (7)
+------------------------------------------------
+1) Two Sum (1)
+2) Best Time to Buy & Sell Stock (121)
+3) Contains Duplicate (217)
+4) Product of Array Except Self (238)
+5) Maximum Subarray (53)
+6) Maximum Product Subarray (152)
+7) 3Sum (15)
+
+------------------------------------------------
+SLIDING WINDOW / STRINGS (6)
+------------------------------------------------
+8) Longest Substring Without Repeating Chars (3)
+9) Longest Repeating Character Replacement (424)
+10) Minimum Window Substring (76)
+11) Valid Anagram (242)
+12) Group Anagrams (49)
+13) Valid Parentheses (20)
+
+------------------------------------------------
+BINARY SEARCH (3)
+------------------------------------------------
+14) Binary Search (704)
+15) Search in Rotated Sorted Array (33)
+16) Find Minimum in Rotated Sorted Array (153)
+
+------------------------------------------------
+INTERVALS (3)
+------------------------------------------------
+17) Merge Intervals (56)
+18) Insert Interval (57)
+19) Meeting Rooms II (253)
+
+------------------------------------------------
+LINKED LIST (4)
+------------------------------------------------
+20) Reverse Linked List (206)
+21) Merge Two Sorted Lists (21)
+22) Remove Nth Node From End of List (19)
+23) Linked List Cycle (141)
+
+------------------------------------------------
+TREES / BST (6)
+------------------------------------------------
+24) Maximum Depth of Binary Tree (104)
+25) Same Tree (100)
+26) Invert Binary Tree (226)
+27) Subtree of Another Tree (572)
+28) Lowest Common Ancestor of a BST (235)
+29) Validate Binary Search Tree (98)
+
+------------------------------------------------
+HEAP / PRIORITY QUEUE (2)
+------------------------------------------------
+30) Top K Frequent Elements (347)
+31) Kth Smallest Element in a BST (230)
+
+------------------------------------------------
+BACKTRACKING (2)
+------------------------------------------------
+32) Subsets (78)
+33) Permutations (46)
+
+------------------------------------------------
+GRAPHS (3)
+------------------------------------------------
+34) Number of Islands (200)
+35) Clone Graph (133)
+36) Course Schedule (207)
+
+------------------------------------------------
+DYNAMIC PROGRAMMING (4)
+------------------------------------------------
+37) Climbing Stairs (70)
+38) Coin Change (322)
+39) Longest Increasing Subsequence (300)
+40) House Robber (198)
+
+================================================
+Study Tips
+- Aim for 3–4 problems/day on weekdays, 5–6/day on weekends.
+- Focus on patterns and articulating your approach + complexity.
+- Spend the last 2–3 days reviewing solved problems and practicing timed mocks.
