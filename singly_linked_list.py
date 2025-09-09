@@ -10,22 +10,19 @@ class LL:
         self.head = None
 
     def build_ll(self, arr:List[int]):
-        head = Node(arr[0])
-        cur = head
-        for a in arr[1:]:
-            cur.next = Node(a)
+        if not arr:
+            return
+        cur = self.head = Node(arr[0])
+        for val in arr[1:]:
+            cur.next = Node(val)
             cur = cur.next
-        self.head = head
 
     def print_ll(self):
         cur = self.head
-        output = ""
-
         while cur:
-            output += "{} ->".format(cur.val)
+            print ("{} -> ".format(cur.val), end="")
             cur = cur.next
-        
-        print (output)
+        print ()
 
     def insert_after(self,node:Node, val:int = 0) -> None:
         if node != None:
