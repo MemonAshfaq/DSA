@@ -293,7 +293,6 @@ def decode_str_op(s: str) -> str:
     
     return "".join(stack)
 
-
 def _demo_decode_str_op():
     # basics
     CHECK("basic 3[a]",                 decode_str_op("3[a]") == "aaa")
@@ -311,7 +310,6 @@ def _demo_decode_str_op():
     # large repeat (sanity only, not printing)
     CHECK("large repeat 50[a] len==50", len(decode_str_op("50[a]")) == 50)
 
-
 #[2,4]
 #[2,1,3,4]
 
@@ -320,17 +318,49 @@ def next_greater_element_bf(nums1:List[int], nums2:List[int]) -> List[int]:
     for i,n in enumerate(nums1):
         found = False
         for j,m in enumerate(nums2):
-            if n == m:
+            if n == m and not found:
                 found = True
-            if found and m > n and nums[i] == -1:
+            if found and m > n:
                 nums[i] = m
+                break
     return nums
 
-def next_greater_element_op(nums1:List[int], nums2:List[int]) -> List[int]:
+# ------------------------------------------------------------------------------
+# Problem: Next Greater Element I (Leetcode 496)
+#
+# You are given two integer arrays:
+#     - nums1: a subset of nums2
+#     - nums2: a superset array
+#
+# For each element in nums1, find the **next greater element** in nums2.
+# The next greater element of x in nums2 is the first element to the right
+# of x in nums2 that is **greater than x**. If it doesn't exist, return -1.
+#
+# Input:
+#     nums1 (List[int]) : Subset array (length m)
+#     nums2 (List[int]) : Superset array (length n, where n >= m)
+#
+# Output:
+#     List[int]: For each element in nums1, return its next greater element
+#                as found in nums2, or -1 if not found.
+#
+# Example:
+#     next_greater_element_op([4,1,2], [1,3,4,2])  => [-1, 3, -1]
+#     next_greater_element_op([2,4], [1,2,3,4])    => [3, -1]
+#
+# Time Complexity: O(n) where n = len(nums2)
+#     - Each element is pushed and popped at most once
+#     - Dictionary lookup is O(1)
+#
+# Space Complexity: O(n + m)
+#     - Stack for mono-processing (≤ n)
+#     - Map for index lookup (≤ m)
+# ------------------------------------------------------------------------------
+def next_greater_element_op(nums1: List[int], nums2: List[int]) -> List[int]:
     nums = [-1] * len(nums1)
     stack = []
 
-    idx_dict = {n:i for i,n in enumerate(nums1)}
+    idx_dict = {n: i for i, n in enumerate(nums1)}
 
     for m in nums2:
         while stack and m > stack[-1]:
@@ -338,6 +368,7 @@ def next_greater_element_op(nums1:List[int], nums2:List[int]) -> List[int]:
             nums[idx_dict[n]] = m
         if m in idx_dict:
             stack.append(m)
+    
     return nums
 
 def _demo_next_greater_element():
