@@ -53,6 +53,33 @@ def _demo_stack():
     CHECK("OP {[]}", valid_parentheses_op("{[]}") == True)
     CHECK("OP empty", valid_parentheses_op("") == True)
 
+# ------------------------------------------------------------------------------
+# Problem: Stack with Constant-Time Minimum Retrieval
+#
+# Design a stack-like data structure that supports the following operations:
+#     - push(x):    Push element x onto the stack
+#     - pop():      Remove the top element from the stack and return it
+#     - top():      Return the top element without removing it
+#     - getmin():   Return the minimum element in the stack in O(1) time
+#
+# Example usage:
+#     s = Stack()
+#     s.push(3)
+#     s.push(5)
+#     s.getmin()     # returns 3
+#     s.push(2)
+#     s.push(1)
+#     s.getmin()     # returns 1
+#     s.pop()        # removes 1
+#     s.getmin()     # returns 2
+#     s.top()        # returns 2
+#
+# Time Complexity:
+#     push, pop, top, getmin -> O(1) each
+#
+# Space Complexity:
+#     O(n) for n elements pushed, due to auxiliary min stack
+# ------------------------------------------------------------------------------
 class Stack:
     def __init__(self):
         self.min = []
@@ -69,6 +96,8 @@ class Stack:
         self.min.pop()
         if len(self.min) != 0:
             self.min_so_far = self.min[-1]
+        else:
+            self.min_so_far = float ('inf')
         return val
 
     def top(self):
@@ -131,22 +160,52 @@ def _demo_min_stack():
     st4.pop()
     CHECK("Min after pop 1", st4.getmin() == 2)
 
-def evaluate_rpl(tokens: List[str]):
+# ------------------------------------------------------------------------------
+# Problem: Evaluate Reverse Polish Notation (Postfix Expression)
+#
+# Evaluate the value of an arithmetic expression in Reverse Polish Notation (RPN).
+# Valid operators are: +, -, *, /
+# Each operand may be an integer. Division should truncate toward zero.
+#
+# Input:
+#     tokens: List[str] — a list of tokens (e.g. ["2", "1", "+", "3", "*"])
+#
+# Output:
+#     int — the result of evaluating the expression
+#
+# Example:
+#     Input : ["2", "1", "+", "3", "*"]
+#     Output: 9
+#     Explanation: ((2 + 1) * 3) = 9
+#
+#     Input : ["4", "13", "5", "/", "+"]
+#     Output: 6
+#     Explanation: (13 / 5 = 2), then (4 + 2) = 6
+#
+# Time Complexity:
+#     O(n) — where n is the number of tokens
+#
+# Space Complexity:
+#     O(n) — for the stack used during evaluation
+# ------------------------------------------------------------------------------
+
+from typing import List
+
+def evaluate_rpl(tokens: List[str]) -> int:
     stack = []
     for c in tokens:
         if c == "+":
             stack.append(stack.pop() + stack.pop())
         elif c == "-":
-            a,b = stack.pop(), stack.pop()
-            stack.append(b-a)
+            a, b = stack.pop(), stack.pop()
+            stack.append(b - a)
         elif c == "*":
             stack.append(stack.pop() * stack.pop())
         elif c == "/":
-            a,b = stack.pop(), stack.pop()
-            stack.append(int(b/a))
+            a, b = stack.pop(), stack.pop()
+            stack.append(int(b / a))
         else:
             stack.append(int(c))
-
     return stack[0]
 
 def _demo_evaluate_rpl():
@@ -189,7 +248,32 @@ def decode_string_bf(s:str) -> str:
 
     return output
 
-def decode_str_op(s:str) -> str:
+# ------------------------------------------------------------------------------
+# Problem: Decode Encoded String (Leetcode 394)
+#
+# Given an encoded string, decode it and return the original form.
+# The encoding rule is: k[encoded_string], where the encoded_string inside
+# the square brackets is repeated exactly k times.
+#
+# The input is guaranteed to be valid and properly nested.
+#
+# Input:
+#     s (str): Encoded string using digits and brackets
+#
+# Output:
+#     str: Fully decoded string
+#
+# Example:
+#     decode_str_op("3[a]2[bc]")      => "aaabcbc"
+#     decode_str_op("3[a2[c]]")       => "accaccacc"
+#     decode_str_op("2[abc]3[cd]ef")  => "abcabccdcdcdef"
+#
+# Time Complexity: O(n), where n is the length of the input string
+#     - Each character is pushed/popped at most once
+#
+# Space Complexity: O(n), due to use of stack and result storage
+# ------------------------------------------------------------------------------
+def decode_str_op(s: str) -> str:
     stack = []
 
     for ch in s:
@@ -200,12 +284,13 @@ def decode_str_op(s:str) -> str:
             while stack[-1] != '[':
                 k = stack.pop()
                 substr = k + substr
-            stack.pop()
+            stack.pop()  # remove '['
 
             k = ""
             while stack and stack[-1].isdigit():
                 k = stack.pop() + k
-            stack.append(substr* int(k))
+            stack.append(substr * int(k))
+    
     return "".join(stack)
 
 
