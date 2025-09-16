@@ -34,6 +34,14 @@ class Graph:
             if dst not in src.neighbors:
                 src.neighbors.append(dst)
 
+    def add_undirected_edge(self,x:Node, y:Node):
+        self.add_node(x)
+        self.add_node(y)
+        if x not in y.neighbors:
+            y.neighbors.append(x)
+        if y not in x.neighbors:
+            x.neighbors.append(y)
+
     def print_graph_dfs(self, node):#call stack
         print (f"--------------DFS--------------")
         print (f"--------- Root Node {node.val} ---------")
@@ -226,3 +234,30 @@ graph2.print_entire_graph_dfs()
 
 print("---- CLONED ENTIRE DFS ----")
 clone2.print_entire_graph_dfs()
+
+print("\n======= Path Existence Check =======")
+"""
+Challenge:
+You’re given a graph with n nodes (labeled 0 … n-1) and a list of edges.
+Determine if there is a path between a given source and destination node.
+
+Input:
+n = 6  
+edges = [[0,1],[0,2],[3,5],[5,4],[4,3]]  
+
+1) source = 0, destination = 5 --> False
+2) source = 3, destination = 5 --> True
+"""
+a = Node('0')
+b = Node('1')
+c = Node('2')
+d = Node('3')
+e = Node('4')
+f = Node('5')
+
+graph3 = Graph()
+graph3.add_undirected_edge(a, b)
+graph3.add_undirected_edge(a, c)
+graph3.add_undirected_edge(d, f)
+graph3.add_undirected_edge(f, e)
+graph3.add_undirected_edge(d, e)
