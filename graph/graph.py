@@ -20,8 +20,8 @@ class Node:
         return id(self)
 
 class Graph:
-    def __init__(self, nodes:list[Node]=[]):
-        self.nodes = nodes
+    def __init__(self, nodes:list[Node]|None=None):
+        self.nodes = nodes or []
 
     def add_node(self, node):
         if node not in self.nodes:
@@ -216,6 +216,26 @@ class Graph:
 
         return dfs(src)
 
+    def count_connected_components(self) -> int:
+        visited = set()
+
+        def dfs(node):
+            if node in visited:
+                return
+
+            visited.add (node)
+
+            for neighbor in node.neighbors:
+                dfs(neighbor)
+        
+        count = 0
+        for node in self.nodes:
+            if node not in visited:
+                count += 1
+                dfs (node)
+        
+        return count
+
 # ------------- Create Nodes -----------------
 a: Node = Node('a')
 b: Node = Node('b')
@@ -330,3 +350,7 @@ check = graph3.has_path_dfs(a,b)
 print (check)
 check = graph3.has_path_dfs(a,e)
 print (check)
+
+print("\n======= Count Connected Components DFS =======")
+count = graph3.count_connected_components()
+print (count)
