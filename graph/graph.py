@@ -180,20 +180,6 @@ class Graph:
         
         return False
 
-    def print_graph_dfs(self, node):#call stack
-        print (f"--------------DFS--------------")
-        print (f"--------- Root Node {node.val} ---------")
-        visited = set()
-
-        def dfs(node):
-            if node in visited:
-                return
-            visited.add(node)
-            print(f"Node {node.val}: {[neighbor.val for neighbor in node.neighbors]}")
-            for neighbor in node.neighbors:
-                dfs(neighbor)
-        dfs(node)
-
     def has_path_dfs(self, src:Node, dst:Node) -> bool:
         if not src or not dst:
             return False
@@ -235,6 +221,20 @@ class Graph:
                 dfs (node)
         
         return count
+
+    def count_report(self, node) -> int:
+        visited = set()
+
+        total = 0
+        def dfs(node):
+            if node in visited:
+                return 0
+            visited.add(node)
+            count = 0
+            for neighbor in node.neighbors:
+                count += 1 + dfs(neighbor)
+            return count
+        return dfs(node)
 
 # ------------- Create Nodes -----------------
 a: Node = Node('a')
@@ -351,6 +351,35 @@ print (check)
 check = graph3.has_path_dfs(a,e)
 print (check)
 
-print("\n======= Count Connected Components DFS =======")
-count = graph3.count_connected_components()
-print (count)
+print("\n======= Count Employee Report DFS =======")
+display = """
+           a
+        /  |  \\
+      b    c   d
+     / \   |    \\
+    e   f  g     h
+   /
+  i
+"""
+print (display)
+
+a = Node('0')
+b = Node('1')
+c = Node('2')
+d = Node('3')
+e = Node('4')
+f = Node('5')
+g = Node('6')
+h = Node('7')
+i = Node('8')
+
+org = Graph()
+org.add_edge(a, [b, c, d])
+org.add_edge(b, [e,f])
+org.add_edge(e, [i])
+org.add_edge(c, [g])
+org.add_edge(d, [h])
+org.print_graph_dfs(a)
+
+print (org.count_report(a))
+print (org.count_report(b))
