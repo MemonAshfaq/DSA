@@ -158,6 +158,64 @@ class Graph:
 
         return Graph(list(visited.values()))
 
+    def has_path_bfs(self, src:Node, dst:Node) -> bool:
+        if not src or not dst:
+            return False
+        
+        if src is dst:
+            return True
+        
+        visited = set()
+        q = deque([src])
+
+        while q:
+            n = q.popleft()
+            if n in visited:
+                continue
+            visited.add(n)
+            for nei in n.neighbors:
+                if dst is nei:
+                    return True
+                q.append(nei)
+        
+        return False
+
+    def print_graph_dfs(self, node):#call stack
+        print (f"--------------DFS--------------")
+        print (f"--------- Root Node {node.val} ---------")
+        visited = set()
+
+        def dfs(node):
+            if node in visited:
+                return
+            visited.add(node)
+            print(f"Node {node.val}: {[neighbor.val for neighbor in node.neighbors]}")
+            for neighbor in node.neighbors:
+                dfs(neighbor)
+        dfs(node)
+
+    def has_path_dfs(self, src:Node, dst:Node) -> bool:
+        if not src or not dst:
+            return False
+
+        if src is dst:
+            return True
+        
+        visited = set()
+
+        def dfs(node):
+            if node in visited:
+                return False
+            visited.add(node)
+            if node is dst:
+                return True
+            for nei in node.neighbors:
+                if dfs(nei):
+                    return True
+            return False
+
+        return dfs(src)
+
 # ------------- Create Nodes -----------------
 a: Node = Node('a')
 b: Node = Node('b')
@@ -235,7 +293,7 @@ graph2.print_entire_graph_dfs()
 print("---- CLONED ENTIRE DFS ----")
 clone2.print_entire_graph_dfs()
 
-print("\n======= Path Existence Check =======")
+print("\n======= Path Existence Check BFS =======")
 """
 Challenge:
 You’re given a graph with n nodes (labeled 0 … n-1) and a list of edges.
@@ -261,3 +319,14 @@ graph3.add_undirected_edge(a, c)
 graph3.add_undirected_edge(d, f)
 graph3.add_undirected_edge(f, e)
 graph3.add_undirected_edge(d, e)
+
+check = graph3.has_path_bfs(a,b)
+print (check)
+check = graph3.has_path_bfs(a,e)
+print (check)
+
+print("\n======= Path Existence Check DFS =======")
+check = graph3.has_path_dfs(a,b)
+print (check)
+check = graph3.has_path_dfs(a,e)
+print (check)
