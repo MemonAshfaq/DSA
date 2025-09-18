@@ -256,6 +256,29 @@ class Graph:
                     return True
         return False
 
+    def has_cycle_directed(self):
+        visited = set()
+        stack = set()
+
+        def dfs(node):
+            visited.add(node)
+            stack.add(node)
+
+            for nei in node.neighbors:
+                if nei not in visited:
+                    if dfs(nei):
+                        return True
+                elif nei in stack:
+                    return True
+            stack.remove(node)
+            return False
+
+        for node in self.nodes:
+            if node not in visited:
+                if dfs(node):
+                    return True        
+        return False
+
 # ------------- Create Nodes -----------------
 a: Node = Node('a')
 b: Node = Node('b')
@@ -448,3 +471,23 @@ graph.add_undirected_edge(b, d)
 graph.add_undirected_edge(c, a)
 
 print (graph.has_cycle_undirected())
+
+print("\n======= Detect Cycle - Directed - DFS =======")
+display = """
+        a -> b -> c
+        ^          |
+        |          |
+        <-----------
+"""
+print (display)
+
+a = Node('0')
+b = Node('1')
+c = Node('2')
+
+graph = Graph()
+graph.add_edge(a, [b])
+graph.add_edge(b, [c])
+graph.add_edge(c, [a])
+
+print (graph.has_cycle_directed())
