@@ -236,6 +236,26 @@ class Graph:
             return count
         return dfs(node)
 
+    def has_cycle_undirected(self) -> bool:
+        visited = set()
+
+        def dfs(node, parent):
+            visited.add(node)
+
+            for nei in node.neighbors:
+                if (nei in visited) and (nei is not parent):
+                    return True
+                elif (nei not in visited) and dfs(nei, node):
+                    return True
+            
+            return False
+
+        for node in self.nodes:
+            if node not in visited:
+                if dfs(node, None):
+                    return True
+        return False
+
 # ------------- Create Nodes -----------------
 a: Node = Node('a')
 b: Node = Node('b')
@@ -383,3 +403,48 @@ org.print_graph_dfs(a)
 
 print (org.count_report(a))
 print (org.count_report(b))
+
+print("\n======= Detect Cycle - Undirected - DFS =======")
+display = """
+          a
+         / |
+        b  c
+        \  |
+          d  
+"""
+print (display)
+
+a = Node('0')
+b = Node('1')
+c = Node('2')
+d = Node('3')
+
+graph = Graph()
+graph.add_undirected_edge(a, b)
+graph.add_undirected_edge(b, d)
+graph.add_undirected_edge(d, c)
+graph.add_undirected_edge(c, a)
+
+print (graph.has_cycle_undirected())
+
+print("\n======= Detect Cycle - Undirected - DFS =======")
+display = """
+          a
+         / |
+        b  c
+        |  
+        d  
+"""
+print (display)
+
+a = Node('0')
+b = Node('1')
+c = Node('2')
+d = Node('3')
+
+graph = Graph()
+graph.add_undirected_edge(a, b)
+graph.add_undirected_edge(b, d)
+graph.add_undirected_edge(c, a)
+
+print (graph.has_cycle_undirected())
