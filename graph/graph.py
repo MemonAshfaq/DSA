@@ -491,3 +491,18 @@ graph.add_edge(b, [c])
 graph.add_edge(c, [a])
 
 print (graph.has_cycle_directed())
+
+display = """
+        a -> b -> c
+"""
+print (display)
+
+a = Node('0')
+b = Node('1')
+c = Node('2')
+
+graph = Graph()
+graph.add_edge(a, [b])
+graph.add_edge(b, [c])
+
+print (graph.has_cycle_directed())
