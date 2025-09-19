@@ -127,6 +127,20 @@ def rob_opt(nums: list[int]) -> int:
         dpi_1 = dpi
     
     return dpi
+
+def rob2(nums: list[int]) -> int:
+    n = len(nums)
+    if n == 1:
+        return nums[0]
+    if n == 2:
+        return max(nums[0], nums[1])
+
+    # Case 1: Exclude last house
+    loot1 = rob_opt(nums[:-1])
+    # Case 2: Exclude first house
+    loot2 = rob_opt(nums[1:])
+    
+    return max(loot1, loot2)
 # ==========================================
 # Test Cases
 # ==========================================
@@ -154,3 +168,15 @@ if __name__ == "__main__":
               f"memo_up={rob_memo_up(nums)}",
               f"memo_up={rob_tab_up(nums)}",
               f"rob_opt={rob_opt(nums)}",)
+
+    print("\n===== House Robber II =====")
+    testcases2 = [
+        [2,3,2],      # Expected 3
+        [1,2,3,1],    # Expected 4
+        [5,1,1,5],    # Expected 6
+        [4,2,3,9],    # Expected 11
+        [7],          # Expected 7 (edge case: one house)
+        [2,10]        # Expected 10 (edge case: two houses)
+    ]
+    for nums in testcases2:
+        print(f"nums={nums} → rob2={rob2(nums)}")
