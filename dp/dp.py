@@ -42,6 +42,16 @@ def climb_stairs_memo_down(n: int) -> int:
         return memo[i]
     return dfs(n)
 
+def climb_stairs_tab_up(n: int) -> int:
+    dp = [0]*(n+1)
+    dp[0] = 1 # there is just 1 way to stand/reach ground
+    dp[1] = 1 # there is just 1 way to go from ground to step1
+
+    for i in range(2,n+1):
+        dp[i] = dp[i-1] + dp[i-2]
+    
+    return dp[-1]
+
 def climb_stairs_fib(n: int) -> int:
     if n <= 2: return n
     a, b = 1, 2
@@ -50,11 +60,9 @@ def climb_stairs_fib(n: int) -> int:
         a, b = b, c
     return c
 
-
 # ------------------------------
 # Problem 2: House Robber I
 # ------------------------------
-
 def rob_bf_down(nums: list[int]) -> int:
     n = len(nums)
     def dfs(i):
@@ -91,6 +99,17 @@ def rob_memo_up(nums: list[int]) -> int:
         return memo[i]
     return dfs(0)
 
+def rob_tab_up(nums: int) -> int:
+    n = len(nums)
+
+    dp = [0]*n
+    dp[0] = nums[0]
+    dp[1] = max(nums[0],nums[1])
+
+    for i in range(2,n):
+        dp[i] = max(nums[i]+dp[i-2], dp[i-1])
+    
+    return dp[-1]
 # ==========================================
 # Test Cases
 # ==========================================
@@ -102,6 +121,7 @@ if __name__ == "__main__":
               f"bf_down={climb_stairs_bf_down(n)}, "
               f"memo_up={climb_stairs_memo_up(n)}, "
               f"memo_down={climb_stairs_memo_down(n)}, "
+              f"tab_up={climb_stairs_tab_up(n)}, "
               f"fib={climb_stairs_fib(n)}")
 
     print("\n===== House Robber =====")
@@ -114,4 +134,5 @@ if __name__ == "__main__":
         print(f"nums={nums} → bf_down={rob_bf_down(nums)}, "
               f"bf_up={rob_bf_up(nums)}, "
               f"memo_down={rob_memo_down(nums)}, "
-              f"memo_up={rob_memo_up(nums)}")
+              f"memo_up={rob_memo_up(nums)}",
+              f"tab_up={rob_tab_up(nums)}",)
