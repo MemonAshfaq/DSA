@@ -110,6 +110,23 @@ def rob_tab_up(nums: int) -> int:
         dp[i] = max(nums[i]+dp[i-2], dp[i-1])
     
     return dp[-1]
+
+def rob_opt(nums: list[int]) -> int:
+    n = len(nums)
+    if n == 1:
+        return nums[0]
+    if n == 2:
+        return max(nums[0], nums[1])
+
+    dpi_2 = nums[0]                  # dp[i-2]
+    dpi_1 = max(nums[0], nums[1])    # dp[i-1]
+
+    for i in range(2, n):
+        dpi = max(dpi_1, nums[i] + dpi_2)
+        dpi_2 = dpi_1
+        dpi_1 = dpi
+    
+    return dpi
 # ==========================================
 # Test Cases
 # ==========================================
@@ -135,4 +152,5 @@ if __name__ == "__main__":
               f"bf_up={rob_bf_up(nums)}, "
               f"memo_down={rob_memo_down(nums)}, "
               f"memo_up={rob_memo_up(nums)}",
-              f"tab_up={rob_tab_up(nums)}",)
+              f"memo_up={rob_tab_up(nums)}",
+              f"rob_opt={rob_opt(nums)}",)
