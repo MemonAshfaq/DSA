@@ -279,6 +279,32 @@ class Graph:
                     return True        
         return False
 
+    def topo_sort_dfs(self):
+        visited = set()
+        stack = set()
+        order = []
+
+        def dfs(node):
+            visited.add(node)
+            stack.add(node)
+
+            for nei in node.neighbors:
+                if nei not in visited:
+                    if dfs(nei):
+                        return True
+                if nei in stack:
+                    return True
+            stack.remove(node) #backtrack
+            order.append(node)
+            return False
+        
+        for node in self.nodes:
+            if node not in visited:
+                if dfs(node):
+                    return None
+        
+        return order[::-1]
+
 # ------------- Create Nodes -----------------
 a: Node = Node('a')
 b: Node = Node('b')
@@ -506,3 +532,50 @@ graph.add_edge(a, [b])
 graph.add_edge(b, [c])
 
 print (graph.has_cycle_directed())
+
+print("\n======= Topological Sort - DFS (No Cycle) =======")
+display = """
+    a → b → c
+    a → d → e
+"""
+print(display)
+
+a = Node('a')
+b = Node('b')
+c = Node('c')
+d = Node('d')
+e = Node('e')
+
+graph = Graph()
+graph.add_edge(a, [b, d])
+graph.add_edge(b, [c])
+graph.add_edge(d, [e])
+
+order = graph.topo_sort_dfs()
+if order:
+    print("Topo order:", [n.val for n in order])
+else:
+    print("Cycle detected → no topo sort")
+
+print("\n======= Topological Sort - DFS (With Cycle) =======")
+display = """
+    a → b → c
+    ↑       |
+    └───────┘
+"""
+print(display)
+
+a = Node('a')
+b = Node('b')
+c = Node('c')
+
+graph = Graph()
+graph.add_edge(a, [b])
+graph.add_edge(b, [c])
+graph.add_edge(c, [a])  # cycle here
+
+order = graph.topo_sort_dfs()
+if order:
+    print("Topo order:", [n.val for n in order])
+else:
+    print("Cycle detected → no topo sort")
