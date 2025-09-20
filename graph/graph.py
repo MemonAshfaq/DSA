@@ -91,18 +91,22 @@ class Graph:
         print (f"-----------BFS Entire Graph------------")
         visited = set()
 
+        def bfs(node):
+            print (f"--------------BFS--------------")
+            q = deque([node])
+            while q:
+                n = q.popleft()
+                if n in visited:
+                    continue
+                visited.add(n)
+                print (f"Node {n.val}: {[neighbor.val for neighbor in n.neighbors]}")
+                for neighbor in n.neighbors:
+                    q.append(neighbor)
+
         for node in self.nodes:
             if node not in visited:
                 print (f"starting BFS traversal at {node.val}")
-                q = deque([node])
-                while q:
-                    n = q.popleft()
-                    if n in visited:
-                        continue
-                    visited.add(n)
-                    print (f"Node {n.val}: {[neighbor.val for neighbor in n.neighbors]}")
-                    for neighbor in n.neighbors:
-                        q.append(neighbor)
+                bfs(node)
 
     def clone_graph(self, node:Node) -> 'Graph':
         #if empty node
