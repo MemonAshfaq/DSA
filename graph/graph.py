@@ -132,7 +132,7 @@ class Graph:
 
             return clone
         
-        dfs(node)
+        dfs(node)  
 
         return Graph(list(visited.values()))
 
@@ -236,7 +236,8 @@ class Graph:
             visited.add(node)
             count = 0
             for neighbor in node.neighbors:
-                count += 1 + dfs(neighbor)
+                count += 1 #count the neighbor itself
+                count += dfs(neighbor) # count all neighbors reachable from that neighbor
             return count
         return dfs(node)
 
