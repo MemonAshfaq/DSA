@@ -400,7 +400,7 @@ def length_of_longest_substring_no_repeat_bf(s: str):
 
 from typing import List
 
-def find_permutations1(s: str) -> List[str]:
+def find_permutations(s: str) -> List[str]:
     word_list = ['']
     for ch in s:
         new_word_list = []
@@ -417,7 +417,7 @@ def _tests_sliding_window():
     s = "pwkwkakdfewjourkadf"
     best = length_of_longest_substring_no_repeat_bf(s)
     CHECK ("length_of_longest_substring_no_repeat_bf", best == 10)
-    #print (find_permutations1("abcd"))
+    #print (find_permutations("abcd"))
 
 # =====================================================
 # 4) PATTERN MATCHING

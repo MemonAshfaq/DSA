@@ -11,7 +11,6 @@ def CHECK(msg: str, cond: bool):
 
     print ("[{}] {}".format("PASS" if cond else "FAIL", msg))
 
-
 #----------------------------------------------------------
 # LC #3. Longest Substring Without Repeating Characters
 #----------------------------------------------------------
@@ -159,7 +158,6 @@ def _demo_longest_substring_no_repeat():
     CHECK('OP: "dvdf" -> 3',         longest_substring_no_repeat_op_on2("dvdf") == 3)
     CHECK('OP: "abba" -> 2',         longest_substring_no_repeat_op_on2("abba") == 2)
     CHECK('OP: "tmmzuxt" -> 5',      longest_substring_no_repeat_op_on2("tmmzuxt") == 5)
-
 
 #----------------------------------------------------------
 # 424. Longest Repeating Character Replacement
