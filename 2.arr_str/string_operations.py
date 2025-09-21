@@ -171,10 +171,7 @@ def char_frequency(s: str) -> Dict[str,int]:
 def char_frequency2(s:str) -> Dict[str,int]:
     freq = {}
     for ch in s:
-        if ch in freq:
-            freq[ch] += 1
-        else:
-            freq[ch] = 1
+        freq[ch] = freq.get(ch,0)+1
     return freq
 
 # Problem: Find the first non-repeating character in a string
@@ -232,7 +229,6 @@ def is_anagram(s: str, t: str) -> bool:
         return False
     return char_frequency(s) == char_frequency(t)
 
-
 # Version 2: Optimized one-pass counter. Works for any character set.
 # Approach:
 # - Use a single dictionary
@@ -266,7 +262,7 @@ def is_anagram2(s: str, t: str) -> bool:
     cnt = [0]*26
 
     for ch in s: cnt[ord(ch)-base] += 1 
-    for ch in s: cnt[ord(ch)-base] -= 1
+    for ch in t: cnt[ord(ch)-base] -= 1
 
     return all(c==0 for c in cnt)
 
@@ -378,6 +374,34 @@ def length_of_longest_substring_no_repeat(s: str):
         
     return best, longest
 
+def length_of_longest_substring_no_repeat_bf(s: str):
+    maxl = 0
+    for i,ch in enumerate(s):
+        cur_s = ch
+        for next_ch in s[i+1:]:
+            if next_ch in cur_s:
+                break
+            else:
+                cur_s += next_ch
+        maxl = max(len(cur_s),maxl)
+    return maxl
+
+            
+
+    
+    for r, ch in enumerate(s):
+        if ch in last and last[ch] >= l:   # FIX: ensure l moves forward
+            l = last[ch] + 1
+        window = s[l:r+1]
+        last[ch] = r
+
+        if len(window) > best:
+            best = len(window)
+            longest = window
+        
+    return best, longest
+
+
 # Problem: Generate all permutations of a string.
 # Input:   s (str) - input string
 # Output:  List[str] - list of all permutations (order not guaranteed)
@@ -411,6 +435,9 @@ def _tests_sliding_window():
     s = "pwkwkakdfewjourkadf"
     best, longest = length_of_longest_substring_no_repeat(s)
     CHECK ("length_of_longest_substring_no_repeat", best == 10 and longest == "akdfewjour")
+    s = "pwkwkakdfewjourkadf"
+    best = length_of_longest_substring_no_repeat_bf(s)
+    CHECK ("length_of_longest_substring_no_repeat_bf", best == 10)
     #print (find_permutations1("abcd"))
 
 # =====================================================
