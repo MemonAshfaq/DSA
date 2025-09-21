@@ -64,6 +64,20 @@ def longest_replacement_bf(s: str, k: int) -> int:
                 best = max(window_len, best)
     return best
 
+def longest_replacement_bf1(s: str, k: int) -> int:
+    l = len(s)
+    A = ord('A')
+    best = 0
+    for i in range(l):
+        freq = [0]*26
+        max_freq = 0
+        for j in range(i,l):
+            freq[ord(s[j])-A] += 1
+            max_freq = max(max(freq),max_freq)
+            if j-i+1 - max_freq<= k:
+                best = max(j-i+1,best)
+    return best
+
 def longest_replacement_op(s: str, k: int) -> int:
     """
     Optimal: Sliding window with a frequency map of chars in the window.
@@ -108,6 +122,13 @@ def _demo_longest_repeating_character_replacement():
     CHECK("BF ABCDE,k=1 -> 2",     longest_replacement_bf("ABCDE", 1) == 2)
     CHECK("BF empty,k=3 -> 0",     longest_replacement_bf("", 3) == 0)
     CHECK("BF k=0 strict",         longest_replacement_bf("ABBA", 0) == 2)  # "AA" or "BB"
+
+    CHECK("BF basic ABAB,k=2 -> 4", longest_replacement_bf1("ABAB", 2) == 4)
+    CHECK("BF AABABBA,k=1 -> 4",   longest_replacement_bf1("AABABBA", 1) == 4)
+    CHECK("BF AAAA,k=2 -> 4",      longest_replacement_bf1("AAAA", 2) == 4)
+    CHECK("BF ABCDE,k=1 -> 2",     longest_replacement_bf1("ABCDE", 1) == 2)
+    CHECK("BF empty,k=3 -> 0",     longest_replacement_bf1("", 3) == 0)
+    CHECK("BF k=0 strict",         longest_replacement_bf1("ABBA", 0) == 2)  # "AA" or "BB"
 
     #---------------- longest_replacement_op -----------------
     CHECK("OP basic ABAB,k=2 -> 4", longest_replacement_op("ABAB", 2) == 4)
