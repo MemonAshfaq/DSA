@@ -359,20 +359,15 @@ def length_of_longest_substring_no_repeat(s: str):
     l = 0
     best = 0
     last = {}
-    window = ""
-    longest = ""
     
     for r, ch in enumerate(s):
         if ch in last and last[ch] >= l:   # FIX: ensure l moves forward
             l = last[ch] + 1
-        window = s[l:r+1]
         last[ch] = r
 
-        if len(window) > best:
-            best = len(window)
-            longest = window
-        
-    return best, longest
+        best = max(r-l+1,best)
+
+    return best
 
 def length_of_longest_substring_no_repeat_bf(s: str):
     maxl = 0
@@ -385,22 +380,6 @@ def length_of_longest_substring_no_repeat_bf(s: str):
                 cur_s += next_ch
         maxl = max(len(cur_s),maxl)
     return maxl
-
-            
-
-    
-    for r, ch in enumerate(s):
-        if ch in last and last[ch] >= l:   # FIX: ensure l moves forward
-            l = last[ch] + 1
-        window = s[l:r+1]
-        last[ch] = r
-
-        if len(window) > best:
-            best = len(window)
-            longest = window
-        
-    return best, longest
-
 
 # Problem: Generate all permutations of a string.
 # Input:   s (str) - input string
@@ -433,8 +412,8 @@ def find_permutations1(s: str) -> List[str]:
 
 def _tests_sliding_window():
     s = "pwkwkakdfewjourkadf"
-    best, longest = length_of_longest_substring_no_repeat(s)
-    CHECK ("length_of_longest_substring_no_repeat", best == 10 and longest == "akdfewjour")
+    best = length_of_longest_substring_no_repeat(s)
+    CHECK ("length_of_longest_substring_no_repeat", best == 10)
     s = "pwkwkakdfewjourkadf"
     best = length_of_longest_substring_no_repeat_bf(s)
     CHECK ("length_of_longest_substring_no_repeat_bf", best == 10)
