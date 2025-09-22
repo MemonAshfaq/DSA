@@ -132,67 +132,6 @@ def _summarize():
     print ("TOTAL: {}".format(_total))
     print ("------------------------------------------------------")
 
-class Node:
-    def __init__(self, val:int = 0, left:Optional['Node'] = None, right:Optional['Node'] = None):
-        self.val:int = val
-        self.left:Node = left
-        self.right:Node = right
-
-def build_tree(a:List[int]):
-    root = Node(a[0])
-    q = deque()
-    q.append(root)
-
-    i = 1
-    while (i < len(a)):
-        cur = q.popleft()
-
-        if i < len(a):
-            cur.left = Node(a[i])
-            q.append(cur.left)
-            i += 1
-        
-        if i < len(a):
-            cur.right = Node(a[i])
-            q.append(cur.right)
-            i += 1
-        
-    return root
-
-def print_tree_dfs(root:Node):
-    stack = [root]
-
-    while stack:
-        node = stack.pop()
-        if node.right:
-            stack.append(node.right)
-        
-        if node.left:
-            stack.append(node.left)
-
-        print (node.val, end=" ")
-    print ()
-
-def print_tree_bfs (root:Node):
-    q = deque()
-    q.append(root)
-
-    while q:
-        node = q.popleft()
-        print (node.val, end=" ")
-
-        if node.left:
-            q.append(node.left)
-
-        if node.right:
-            q.append(node.right)
-        
-    print()
-
-root = build_tree([1,2,3,4,5,6,7])
-print_tree_dfs(root)
-print_tree_bfs(root)
-
 if __name__ == "__main__":
     _demo_queue()
     _demo_queue_stack()

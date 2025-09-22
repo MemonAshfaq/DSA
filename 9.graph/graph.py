@@ -229,7 +229,6 @@ class Graph:
     def count_report(self, node) -> int:
         visited = set()
 
-        total = 0
         def dfs(node):
             if node in visited:
                 return 0

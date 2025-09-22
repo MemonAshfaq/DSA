@@ -34,7 +34,7 @@ def binary_search(a:List[int], target:int) -> int:
         elif (target > a[m]):
             l = m + 1
         else:
-            r = m -1
+            r = m - 1
     return -1
 
 def _demo_binary_search():

@@ -24,7 +24,7 @@ def climb_stairs_bf_down(n: int) -> int:
 
 def climb_stairs_memo_up(n: int) -> int:
     memo = {}
-    def dfs(i):
+    def dfs(i):  
         if i == n: return 1
         if i > n: return 0
         if i in memo: return memo[i]
