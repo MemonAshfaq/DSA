@@ -129,19 +129,6 @@ def max_profit_bf_v1(prices: List[int]) -> int:
                 days = [d1,d2]
     return profit, days
 
-def max_profit_bf_v1(prices: List[int]) -> int:
-    profit:int = 0
-    days:List[int] = []
-    totaldays = len(prices)
-
-    for d1 in range(totaldays):
-        for d2 in range(d1+1,totaldays):
-            diff = prices[d2] - prices[d1]
-            if (diff > profit):
-                profit = diff
-                days = [d1,d2]
-    return profit, days
-
 def max_profit_op_v0(prices: List[int]) -> int:
     max_profit:int = 0
     min_price: int = float('inf')

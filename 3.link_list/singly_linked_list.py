@@ -93,7 +93,7 @@ class LL:
                 return True
 
         return False
-
+ 
     def merge_two_sorted_lists(self,ll1:'LL', ll2:'LL'):
         dummy = Node(0)
         cur = dummy
@@ -141,6 +141,15 @@ class LL:
 
         return dummy.next
     
+def find_middle(self) -> int:
+    slow = fast = self.head
+
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    return slow.val
+
 # ---------------------------------------------------------
 # Minimal call-based tests for LL methods 
 # ---------------------------------------------------------
