@@ -498,12 +498,140 @@ def _tests_pattern_matching():
     CHECK("all match", find_words_within_a_string("hello", ["he", "lo", "hlo"]) == 3)
     CHECK("none match", find_words_within_a_string("data", ["xyz", "qq", "ttt"]) == 0)
 
+#----------------------------------------------------------
+# 424. Longest Repeating Character Replacement
+#----------------------------------------------------------
+"""
+Problem: Given a string s consisting of uppercase English letters and an integer k,
+return the length of the longest substring that can be obtained by replacing at most
+k characters so that all characters in the substring are the same.
+
+Input: str s (A-Z only), int k (k >= 0)
+Output: int (max length)
+
+Examples:
+  s="ABAB", k=2         -> 4        (replace two 'A'->'B' or two 'B'->'A')
+  s="AABABBA", k=1      -> 4        ("AABA" or "ABBA")
+  s="AAAA", k=2         -> 4        (already uniform)
+  s="ABCDE", k=1        -> 2        (any pair with one change)
+  s="", k=3             -> 0
+
+Edge cases to watch:
+- Empty string → 0
+- k = 0 (no replacements allowed)
+- All same letters (already optimal)
+- Many distinct letters with small k
+- Very long strings (performance)
+
+Pattern: Sliding Window + frequency count + track max_freq in window
+"""
+
+from typing import List, Dict
+
+def longest_replacement_bf(s: str, k: int) -> int:
+    """
+    Brute force: Try all substrings s[i:j+1]. For each, count the frequency
+    of letters and check if (window_len - max_freq) <= k. Track the best length.
+    T: O(n^2 * Σ) where Σ ≤ 26 (build/count per window)
+    S: O(Σ) for frequency map
+    """
+    n = len(s)
+    best = 0
+
+    A = ord('A')
+    for i in range(n):
+        freq = [0]*26
+        max_freq = 0
+        for j in range(i,n):
+            idx = ord(s[j]) - A
+            freq[idx] += 1
+            max_freq = max(max_freq, freq[idx])
+            window_len = j - i + 1
+            if (window_len - max_freq) <= k:
+                best = max(window_len, best)
+    return best
+
+def longest_replacement_bf1(s: str, k: int) -> int:
+    l = len(s)
+    A = ord('A')
+    best = 0
+    for i in range(l):
+        freq = [0]*26
+        max_freq = 0
+        for j in range(i,l):
+            freq[ord(s[j])-A] += 1
+            max_freq = max(max(freq),max_freq)
+            if j-i+1 - max_freq<= k:
+                best = max(j-i+1,best)
+    return best
+
+def longest_replacement_op(s: str, k: int) -> int:
+    """
+    Optimal: Sliding window with a frequency map of chars in the window.
+    Maintain max_freq = highest count of any single letter in the window.
+    If (window_len - max_freq) > k, shrink from the left.
+    Answer is max window length seen.
+    T: O(n) amortized, S: O(Σ) with Σ ≤ 26
+    """
+    best = 0
+    l = 0
+    n = len(s)
+    freq = [0]*26
+    A = ord('A')
+    for r in range(n):
+        freq[ord(s[r])-A] += 1
+        if ((r-l+1) - max(freq)) > k:
+            freq[ord(s[l])-A] -= 1
+            l += 1
+        best = max(r-l+1,best)
+
+    return best
+
+"""
+------------------------------------------------------------
+Complexity Comparison
+------------------------------------------------------------
+Version                    | Time          | Space | Notes
+---------------------------|---------------|-------|------------------------------
+longest_replacement_bf     | O(n^2 * 26)   | O(26) | Check all windows via counts
+longest_replacement_op     | O(n)          | O(26) | SW + freq + track max_freq
+------------------------------------------------------------
+"""
+
+# Assumes a CHECK helper exists:
+# def CHECK(msg: str, cond: bool): print("PASS" if cond else "FAIL", "-", msg)
+
+def _demo_longest_repeating_character_replacement():
+    #---------------- longest_replacement_bf -----------------
+    CHECK("BF basic ABAB,k=2 -> 4", longest_replacement_bf("ABAB", 2) == 4)
+    CHECK("BF AABABBA,k=1 -> 4",   longest_replacement_bf("AABABBA", 1) == 4)
+    CHECK("BF AAAA,k=2 -> 4",      longest_replacement_bf("AAAA", 2) == 4)
+    CHECK("BF ABCDE,k=1 -> 2",     longest_replacement_bf("ABCDE", 1) == 2)
+    CHECK("BF empty,k=3 -> 0",     longest_replacement_bf("", 3) == 0)
+    CHECK("BF k=0 strict",         longest_replacement_bf("ABBA", 0) == 2)  # "AA" or "BB"
+
+    CHECK("BF basic ABAB,k=2 -> 4", longest_replacement_bf1("ABAB", 2) == 4)
+    CHECK("BF AABABBA,k=1 -> 4",   longest_replacement_bf1("AABABBA", 1) == 4)
+    CHECK("BF AAAA,k=2 -> 4",      longest_replacement_bf1("AAAA", 2) == 4)
+    CHECK("BF ABCDE,k=1 -> 2",     longest_replacement_bf1("ABCDE", 1) == 2)
+    CHECK("BF empty,k=3 -> 0",     longest_replacement_bf1("", 3) == 0)
+    CHECK("BF k=0 strict",         longest_replacement_bf1("ABBA", 0) == 2)  # "AA" or "BB"
+
+    #---------------- longest_replacement_op -----------------
+    CHECK("OP basic ABAB,k=2 -> 4", longest_replacement_op("ABAB", 2) == 4)
+    CHECK("OP AABABBA,k=1 -> 4",    longest_replacement_op("AABABBA", 1) == 4)
+    CHECK("OP AAAA,k=2 -> 4",       longest_replacement_op("AAAA", 2) == 4)
+    CHECK("OP ABCDE,k=1 -> 2",      longest_replacement_op("ABCDE", 1) == 2)
+    CHECK("OP empty,k=3 -> 0",      longest_replacement_op("", 3) == 0)
+    CHECK("OP k=0 strict",          longest_replacement_op("ABBA", 0) == 2)
+
 # ---------- Runner ----------
 def run_all_checks():
     _tests_basics()
     _tests_anagrams()
     _tests_sliding_window()
     _tests_pattern_matching()
+    _demo_longest_repeating_character_replacement()
     print(f"TOTAL: {_passed}/{_total} passed")
 
 # ---------- Main ----------
