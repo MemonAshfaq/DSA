@@ -54,8 +54,8 @@ class DLL:
             self.tail = node
             self.head = node
 
-    # 1<-> 2 <-> 3 <-> 4 -> none
-    # 1 <-> 2  <-> 3 -> None
+    # 1 <-> 2 <-> 3 <-> 4 -> none
+    # 1 <-> 2 <-> 3 -> None
     def delete_node(self, node:Node):
         if node.prev:
             node.prev.next = node.next
