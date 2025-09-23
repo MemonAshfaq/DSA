@@ -1,8 +1,8 @@
-from typing import Optional, List
+from __future__ import annotations
 from collections import deque
 
 class Node:
-    def __init__(self, val:int, left:'Optional[Node]'=None, right:'Optional[Node]'=None):
+    def __init__(self, val: int, left: Node | None = None, right: Node | None = None):
         self.val = val
         self.left = left
         self.right = right
@@ -87,7 +87,7 @@ def build_tree(a:List[int]) -> Optional['Node']:
                 # fill the left
                 cur.left = Node(a[i])
                 # add it to queue so the left gets processed first
-                q.append(cur.left)
+                q. (cur.left)
             # move to next i
             i+=1
 
@@ -145,6 +145,10 @@ def max_depth_dfs(root:Node) -> int:
 
     return max_depth
 
+def max_depth_dfs_rec(root:Node) -> int:
+    if not root: return 0
+    return 1+max(max_depth_dfs_rec(root.left),max_depth_dfs_rec(root.right))
+
 def validate_bst(root:Node,low = float('-inf'),high = float('inf')) -> bool:
     if not root:
         return True
@@ -179,6 +183,19 @@ def lca_bst(root: Node, p: Node, q: Node) -> Node:
             cur = cur.left
         else:
             return cur
+
+def lca_bst_rec(root: Node, p: Node, q: Node) -> Node | None:
+    if not root:
+        return None
+
+    if p.val > root.val and q.val > root.val:
+        return lca_bst(root.right, p, q)
+
+    if p.val < root.val and q.val < root.val:
+        return lca_bst(root.left, p, q)
+
+    # split point or equal → this is the LCA
+    return root
 
 root = build_tree([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
 print_tree_bfs(root)
