@@ -257,3 +257,50 @@ def pascal_triangle(num_rows):
             row[j] = triangle[i-1][j-1] + triangle[i-1][j]
         triangle.append(row)
     return triangle
+
+class Person:
+    def __init__(self, name:str, wants:bool):
+        self.name = name
+        self.wants = wants
+
+class Apt:
+    def __init__(self, num:int, rooms:int):
+        self.num = num
+        self.rooms = rooms
+
+def allocate_units(apts:list[Apt], people:list[Person]) -> dict[int:list[Person]],list[str]:
+    apt_map = {}
+    for apt in apts:
+        apt_map[apt.num] = []
+    
+    unassigned = []
+
+    for person in people:
+        assigned = False
+        for apt in apts:
+            if person.wants:
+                if len(apt_map[apt.num]) < apt.rooms:
+                    apt_map[apt.num].append(person.name)
+                    assigned = True
+                    break
+            else:
+                if apt.rooms == 1:
+                    if len(apt_map[apt.num]) == 0:
+                        apt_map[apt.num].append(person.name)
+                        assigned = True
+                        break
+        if not assigned:
+            unassigned.append(person.name)
+
+    return apt_map, unassigned
+
+apts = [Apt(101, 2), Apt(102, 1)]
+people = [Person("Alice", True), Person("Bob", True), Person("Cara", False)]
+expected = {
+    101: ["Alice", "Bob"],   # fills both slots
+    102: ["Cara"]
+}
+
+apt_map = allocate_units(apts, people)
+
+print (apt_map)
