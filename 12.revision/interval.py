@@ -36,3 +36,19 @@ print(insert_interval([[1,3],[6,9]], [2,5]))
 
 print(insert_interval([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,9]))
 # [[1,2],[3,10],[12,16]]
+
+
+def merge_intervals(intervals):
+  intervals.sort()
+  merged = [intervals[0]]
+  
+  for start, end in intervals[1:]:
+    if merged[-1][1] >= start:
+      merged[-1][1] = max(merged[-1][1],end)
+    else:
+      merged.append([start,end])
+  return merged
+  
+
+  
+print(merge_intervals([[1,3],[2,6],[8,10],[15,18]]))
