@@ -1,7 +1,11 @@
-def intervals_overlap(a,b):
-  a_start, a_end = a
-  b_start, b_end = b
-  return not((a_end < b_start) or (b_end < a_start))
+def intervals_overlap(a, b):
+    """
+    Return True if two closed intervals [a_start, a_end] and [b_start, b_end]
+    overlap or touch.
+    """
+    a_start, a_end = a
+    b_start, b_end = b
+    return a_start <= b_end and b_start <= a_end
 
 print(intervals_overlap([1, 5], [4, 8]))   # True (overlap 4–5)
 print(intervals_overlap([1, 2], [3, 4]))   # False
@@ -17,7 +21,8 @@ def insert_interval(intervals, interval):
     new_list.append(intervals[i])
     i+=1
 
-  #Merge all intervals that overlap with [start, end]  
+  #Merge all intervals that overlap with [start, end]
+  #Look at all meetings that start before this meeting ends
   while (i < len(intervals) and intervals[i][0] <= end):
     start = min(start,intervals[i][0])
     end = max(end,intervals[i][1])
