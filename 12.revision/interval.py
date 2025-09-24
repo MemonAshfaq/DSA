@@ -1,7 +1,6 @@
 def intervals_overlap(a,b):
   a_start, a_end = a
   b_start, b_end = b
-
   return not((a_end < b_start) or (b_end < a_start))
 
 print(intervals_overlap([1, 5], [4, 8]))   # True (overlap 4–5)
@@ -11,7 +10,6 @@ print(intervals_overlap([1, 4], [4, 6]))   # True (touching counts)
 def insert_interval(intervals, interval):
   start,end = interval
   i=0
-  
   new_list = []
 
   #Add all intervals that end before the new one starts
@@ -33,10 +31,8 @@ def insert_interval(intervals, interval):
 
 print(insert_interval([[1,3],[6,9]], [2,5]))
 # [[1,5],[6,9]]
-
 print(insert_interval([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,9]))
 # [[1,2],[3,10],[12,16]]
-
 
 def merge_intervals(intervals):
   intervals.sort()
@@ -48,7 +44,5 @@ def merge_intervals(intervals):
     else:
       merged.append([start,end])
   return merged
-  
-
   
 print(merge_intervals([[1,3],[2,6],[8,10],[15,18]]))
